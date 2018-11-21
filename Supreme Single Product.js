@@ -1,19 +1,19 @@
-﻿// Photo Name of item
+// Photo Name of item
 var target = 'rU4GusJ_cok';
 
 // Your size
-var preferredSize = "Medium"; // "Small", "Medium", "Large", "XLarge"
+var preferredSize = "Large"; // "Small", "Medium", "Large", "XLarge"
 
 //Address info
-var billing_name = "asd asd";
-var order_email = "aaaa@xxx.com";
-var order_tel = "11111111";
-var order_address = "ss ss";
-var order_apt = "apt1";
-var order_billing_zip = "11111";
-var order_billing_city = "aa aa";
-var order_billing_state = "CA";
-var order_billing_country = "USA"; // "USA", "CANADA"
+var billing_name = "John Doe";
+var order_email = "jd@gmail.com";
+var order_tel = "1234567890";
+var order_address = "1 This Street";
+var order_apt = "";
+var order_billing_zip = "A1B 2C3";
+var order_billing_city = "Toronto";
+var order_billing_state = "ON";
+var order_billing_country = "CANADA"; // "USA", "CANADA"
 
 //Payment info
 var cnb = "0000000000";
