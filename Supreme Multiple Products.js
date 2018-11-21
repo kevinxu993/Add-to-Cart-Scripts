@@ -1,48 +1,54 @@
-﻿(function() {
+(function() {
+    let currentTime = new Date();
+    console.log('started time: ' + currentTime.toISOString());
+    let checkout_URL = "https://www.supremenewyork.com/checkout";
     let items = [
         {
             item_code: 'r3cO9JxIjiI',
-            preferSize_1: 'Medium',
-            preferSize_2: 'Large'
+            preferSize_1: 'Large',
+            preferSize_2: 'Medium'
         },
         {
             item_code: 'UpYUEolh5WY',
-            preferSize_1: '',
-            preferSize_2: ''
+            preferSize_1: 'Large',
+            preferSize_2: 'Medium'
         },
         {
             item_code: 'mTEWq6INkac',
             preferSize_1: '',
             preferSize_2: ''
-        }
-    ];
+        },
+        {
+            item_code: 'xUWquwoJt-I',
+            preferSize_1: '',
+            preferSize_2: ''
+        }];
+
+    let urlToItem = {};
+
+    // all oponed window
+    let wins = {};
 
     let cnb = "0000000000";
     let month = "11";
     let year = "2020";
     let vval = "000";
 
-    var billing_name = "x";
-    var order_email = "i@xx.com";
-    var order_tel = "400-000-0000";
-    var order_address = "wedqwe";
-    var order_unit = "qwe";
-    var order_billing_zip = "00000";
-    var order_billing_city = "xxxx";
-    var order_billing_state = "IL";
-    var order_billing_country = "USA"; // "USA", "CANADA"
-
-    //////////////////////////////////////////////////////////////
-
-    let currentTime = new Date();
-    console.log('started time: ' + currentTime.toISOString());
-    let wait = ms => new Promise((r, j)=>setTimeout(r, ms));
-    let checkout_URL = "https://www.supremenewyork.com/checkout";
-
-    let urlToItem = {};
-    let wins = {};
+    var billing_name = "John Doe";
+    var order_email = "jd@gmail.com";
+    var order_tel = "1234567890";
+    var order_address = "1 This Street";
+    var order_unit = "";
+    var order_billing_zip = "A1B 2C3";
+    var order_billing_city = "Toronto";
+    var order_billing_state = "ON";
+    var order_billing_country = "CANADA"; 
+    var auto_checkout = false;
+    var checkout_delay = 1500;
 
     addItems();
+
+    
 
     // get all selected items url 
     function getUrls() {
@@ -124,16 +130,16 @@
         }        
     }
 
-    function checkout (urls) {
+    function checkout () {
         wins['checkout'] = window.open(checkout_URL, '_blank');
-        console.log('checkout!')
-        payment(urls)
+        console.log('checkout!');
+        payment();
     }
     
 
-    function payment(urls) {
+    function payment() {
         //console.log(urls)
-        let win = wins['checkout']
+        let win = wins['checkout'];
         if (win.document.getElementById('checkout_form')) {
         /*
         Script to use on checkout screen
@@ -164,12 +170,13 @@
                 $(win.document).find('input#order_billing_city')[0].value = order_billing_city;
             }
 
-            if ($(win.document).find('select#order_billing_state')[0]) {
-                $(win.document).find('select#order_billing_state')[0].value = order_billing_state;
-            }
-
             if ($(win.document).find('select#order_billing_country')[0]) {
                 $(win.document).find('select#order_billing_country')[0].value = order_billing_country;
+                win.$('select#order_billing_country').trigger('change');
+            }
+
+            if ($(win.document).find('select#order_billing_state')[0]) {
+                $(win.document).find('select#order_billing_state')[0].value = order_billing_state;
             }
         
             if ($(win.document).find('input#nnaerb')[0]) {
@@ -191,14 +198,16 @@
                 $(win.document).find('.checkbox')[1].click();
                 console.log('prepare to pay')
                 
+                // auto pay here .....!
                 console.log('total checkout time: ' + (new Date().getTime() - currentTime.getTime())/ 1000);
-                //Auto payment，1500(ms) is delay setting，uncomment the next line to turn on Auto payment
-                //wait(1500).then(pay());
+                if (auto_checkout) {
+                    setTimeout(() => pay(), checkout_delay)
+                }
 
             }
         
         } else {
-            setTimeout(function(){ payment(urls); }, 10);
+            setTimeout(function(){ payment(); }, 10);
             //console.log("waiting to payment...");
         }
     }
@@ -208,5 +217,3 @@
         console.log('paid')
         win.document.getElementsByName('commit')[0].click();
     }
-    
-})();
